@@ -1,0 +1,72 @@
+.asset-card {
+  width: 600px;
+  height: 140px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+.asset-card h3 {
+  margin-top: 0;
+  font-size: 1.5em;
+}
+.asset-card p {
+  color: #666;
+}
+.asset-card .actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Top-Section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.Bottom-Section {
+  display: flex;
+  margin-top: 16px;
+  margin: 16px;
+}
+.BottomLeft-Section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-right: 16px;
+  padding: 8px 16px;
+}
+.BottomRight-Section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 8px 16px;
+}
+.TitleBottomLeft {
+  color: #000000;
+  text-align: left;
+  background-color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.TitleBottomRight {
+  color: #000000;
+  text-align: left;
+  background-color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.dashboard-title {
+  color: #000000;
+  text-align: left;
+  background-color: #ffffff;
+  margin: 16px;
+  margin-bottom: 4px;
+  padding: 8px 16px;
+}
