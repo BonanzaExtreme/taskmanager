@@ -1,45 +1,88 @@
 .topbar {
   background-color: #ffffff;
-  border-bottom: 1px solid rgb(0, 0, 0, 0.25);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .topbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  height: 60px;
+  padding: 1.2rem 2.5rem;
+  height: 80px; /* increased height */
 }
 
 .topbar-left {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .page-title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: #2c3e50;
 }
 
 .page-subtitle {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #9a9696;
 }
 
 .topbar-right {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem; /* better spacing */
 }
 
+/* ICONS */
+.icon {
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+/* NOTIFICATION */
+.notification-wrapper {
+  padding-top: 5px;
+  position: relative;
+}
+
+.notification-popup {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 220px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: none;
+  z-index: 100;
+}
+
+.notification-wrapper:hover .notification-popup {
+  display: block;
+}
+
+/* PROFILE */
 .profile-section {
   display: flex;
   align-items: center;
+  gap: 0.6rem;
   cursor: pointer;
+}
+
+.profile-avatar {
+  font-size: 2rem;
+}
+
+.profile-name {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
 }
 
 .profile-role {
@@ -47,25 +90,7 @@
   color: #9a9696;
 }
 
-.profile-name {
-  display: flex;
-  flex-direction: column;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-}
-
-.profile-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  border: 1px solid rgba(186, 0, 0, 0.25);
-  transition: background-color 0.2s;
-}
-
-.profile-icon:hover {
-  background-color: #fffffd;
+.dropdown-icon {
+  font-size: 0.9rem;
+  margin-left: 0.3rem;
 }

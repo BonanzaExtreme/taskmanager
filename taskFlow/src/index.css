@@ -8,6 +8,83 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* LIGHT THEME */
+.light {
+  color: #213547;
+  background-color: #ffffff;
+}
+
+/* DARK THEME */
+.dark {
+  color: #e8ecf1;
+  background-color: #101317;
+}
+
+.dark .main-content {
+  background-color: #141a21;
+  color: #e8ecf1;
+}
+
+.dark .sidebar {
+  background-color: #111821;
+  border-right-color: rgba(255, 255, 255, 0.15);
+  color: #e8ecf1;
+}
+
+.dark .sidebar-header h2,
+.dark .nav-link,
+.dark .nav-icon {
+  color: #e8ecf1;
+}
+
+.dark .nav-link:hover,
+.dark .nav-link.active {
+  background-color: #1e2834;
+}
+
+.dark .topbar {
+  background-color: #111821;
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.dark .page-title {
+  color: #f4f7fb;
+}
+
+.dark .page-subtitle,
+.dark .profile-role {
+  color: #b4c0cf;
+}
+
+.dark .profile-icon {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .profile-icon:hover {
+  background-color: #1e2834;
+}
+
+.dark input,
+.dark select,
+.dark textarea,
+.dark button {
+  color: #e8ecf1;
+}
+
+/* Optional: smooth transition */
+body,
+.settings-page,
+.sidebar,
+.topbar,
+.main-content,
+.nav-link,
+.settings-container {
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    border-color 0.3s;
+}
 
 body {
   margin: 0;

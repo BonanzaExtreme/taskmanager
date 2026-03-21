@@ -1,0 +1,88 @@
+.tasklist-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 30px;
+  font-family: sans-serif;
+}
+
+.toplist-container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px; /* space between buttons */
+}
+
+.add-task-btn:hover {
+  background-color: #1a2b3c;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+}
+
+.bottom-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Task row cards */
+.task-card {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  transition: 0.2s ease;
+}
+
+.task-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Dashed version for Add Task */
+.task-card.dashed {
+  border: 2px dashed #bbb;
+  background-color: #fafafa;
+  cursor: pointer;
+  text-align: center;
+}
+
+.task-card.dashed:hover {
+  background-color: #f0f0f0;
+}
+
+/* ✅ Status badge */
+.status {
+  display: inline-block; /* hug text */
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #fff;
+  justify-self: start; /* align left in grid cell */
+}

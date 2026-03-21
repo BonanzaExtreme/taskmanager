@@ -3,8 +3,17 @@ import Card from "../../components/card";
 import "../../components/card.css";
 import Calendar from "../../components/calendar";
 import "../../components/calendar.css";
+import PieChart from "../../components/piechart";
+import StatText from "../../components/stattext";
 
 const Dashboard = () => {
+  let openTasks = 10;
+  let inProgress = 7;
+  let completed = 3;
+  let cancelled = 2;
+  let activeTasks = openTasks + inProgress;
+  let closedTasks = completed + cancelled;
+
   return (
     <div className="dashboard-container">
       <h3 className="dashboard-title">Task Dashboard</h3>
@@ -16,14 +25,35 @@ const Dashboard = () => {
       </section>
       <section className="Bottom-Section">
         <div className="BottomLeft-Section">
-          <div className="TitleBottomLeft">Calendar</div>
+          <div className="TitleBottomLeft">
+            <h3>Calendar</h3>
+          </div>
           <div className="CalendarPlaceholder">
             <Calendar />
           </div>
         </div>
         <div className="BottomRight-Section">
-          <div className="TitleBottomRight">Task Statistics</div>
-          <div className="StatisticsPlaceholder"></div>
+          <div className="TitleBottomRight">
+            <h3>Task Statistics</h3>
+          </div>
+          <div className="StatisticsPlaceholder">
+            <PieChart
+              data={[
+                { id: 0, value: openTasks, label: "Open" },
+                { id: 1, value: inProgress, label: "In Progress" },
+                { id: 2, value: completed, label: "Completed" },
+                { id: 3, value: cancelled, label: "Cancelled" },
+              ]}
+            />
+          </div>
+          <div className="StatsTextContainer">
+            <StatText text="Open Tasks" count={openTasks} />
+            <StatText text="In Progress" count={inProgress} />
+            <StatText text="Completed" count={completed} />
+            <StatText text="Cancelled" count={cancelled} />
+            <StatText text="Active Tasks" count={activeTasks} />
+            <StatText text="Closed Tasks" count={closedTasks} />
+          </div>
         </div>
       </section>
     </div>

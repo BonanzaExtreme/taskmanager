@@ -119,6 +119,12 @@
   transform: translateY(0);
 }
 
+.auth-error {
+  color: #b42318;
+  font-size: 0.9rem;
+  margin: -0.5rem 0 0;
+}
+
 /* Link */
 .auth-link {
   text-align: center;

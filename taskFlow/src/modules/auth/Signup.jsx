@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import "./auth.css";
+import { supabase } from "../../supabase";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -15,10 +20,55 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signup:", formData);
-    // Add signup logic here
+    const { name, email, password } = formData;
+    setErrorMessage("");
+    setIsSubmitting(true);
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name,
+        },
+      },
+    });
+
+    if (error) {
+      setIsSubmitting(false);
+      setErrorMessage(error.message);
+    } else {
+      const userId = data?.user?.id;
+
+      if (!userId) {
+        setIsSubmitting(false);
+        setErrorMessage("Signup succeeded but user ID is missing.");
+        return;
+      }
+
+      const { error: insertError } = await supabase.from("profiles").upsert(
+        {
+          id: userId,
+          email,
+          name,
+        },
+        { onConflict: "id" },
+      );
+
+      if (insertError) {
+        setIsSubmitting(false);
+        setErrorMessage(
+          `Account created, but profile insert failed: ${insertError.message}`,
+        );
+        return;
+      }
+
+      setIsSubmitting(false);
+      console.log("Signup successful:", data);
+      navigate("/login", { replace: true });
+    }
   };
 
   return (
@@ -71,8 +121,14 @@ const Signup = () => {
               />
             </div>
 
-            <button type="submit" className="auth-button">
-              Sign Up
+            {errorMessage && <p className="auth-error">{errorMessage}</p>}
+
+            <button
+              type="submit"
+              className="auth-button"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Creating account..." : "Sign Up"}
             </button>
           </form>
 

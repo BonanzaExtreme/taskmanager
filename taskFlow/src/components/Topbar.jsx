@@ -1,6 +1,8 @@
 import React from "react";
 import { FaArrowDown } from "react-icons/fa6";
 import "./Topbar.css";
+import { IoIosNotifications } from "react-icons/io";
+import { CgProfile } from "react-icons/cg";
 
 const Topbar = () => {
   return (
@@ -10,20 +12,27 @@ const Topbar = () => {
           <h1 className="page-title">Hello, User!</h1>
           <h2 className="page-subtitle">Welcome back to TaskFlow</h2>
         </div>
+
         <div className="topbar-right">
-          <div className="profile-section">
-            <div className="profile-avatar">
-              <span>👤</span>
+          {/* Notification */}
+          <div className="notification-wrapper">
+            <IoIosNotifications className="icon" />
+
+            <div className="notification-popup">
+              <p>No new notifications</p>
             </div>
           </div>
-          <div className="profile-name">
-            <span>John Doe</span>
-            <span className="profile-role">User</span>
-          </div>
-          <div className="dropdown-menu">
-            <span>
-              <FaArrowDown />
-            </span>
+
+          {/* Profile */}
+          <div className="profile-section">
+            <CgProfile className="icon profile-avatar" />
+
+            <div className="profile-name">
+              <span>John Doe</span>
+              <span className="profile-role">User</span>
+            </div>
+
+            <FaArrowDown className="dropdown-icon" />
           </div>
         </div>
       </div>

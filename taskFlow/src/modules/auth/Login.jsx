@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import "./auth.css";
+import { supabase } from "../../supabase";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -14,10 +19,52 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login:", formData);
-    // Add login logic here
+    const { email, password } = formData;
+    setErrorMessage("");
+    setIsSubmitting(true);
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setIsSubmitting(false);
+      setErrorMessage(error.message);
+    } else {
+      const userId = data?.user?.id;
+      const userEmail = data?.user?.email || email;
+      const userName = data?.user?.user_metadata?.name || "";
+
+      if (!userId) {
+        setIsSubmitting(false);
+        setErrorMessage("Login succeeded but user ID is missing.");
+        return;
+      }
+
+      const { error: profileError } = await supabase.from("profiles").upsert(
+        {
+          id: userId,
+          email: userEmail,
+          name: userName,
+        },
+        { onConflict: "id" },
+      );
+
+      if (profileError) {
+        setIsSubmitting(false);
+        setErrorMessage(
+          `Login succeeded, but profile sync failed: ${profileError.message}`,
+        );
+        return;
+      }
+
+      setIsSubmitting(false);
+      console.log("Login successful:", data);
+      navigate("/dashboard", { replace: true });
+    }
   };
 
   return (
@@ -57,8 +104,14 @@ const Login = () => {
               />
             </div>
 
-            <button type="submit" className="auth-button">
-              Login
+            {errorMessage && <p className="auth-error">{errorMessage}</p>}
+
+            <button
+              type="submit"
+              className="auth-button"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Logging in..." : "Login"}
             </button>
           </form>
 

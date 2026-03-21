@@ -1,0 +1,168 @@
+.settings-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.settings-container {
+  display: flex;
+  width: 70%;
+  height: 70%;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* LEFT PANEL */
+.settings-left {
+  flex: 2;
+  border-right: 1px solid #ccc;
+  text-align: left;
+}
+
+.settings-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.settings-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.settings-item:hover,
+.settings-item.active {
+  background-color: #ddd;
+  border-radius: 4px;
+}
+
+/* RIGHT PANEL */
+.settings-right {
+  flex: 3;
+}
+
+.settings-content {
+  width: 100%;
+  text-align: left;
+}
+
+/* PROFILE ROW */
+.profile-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+.profile-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* INPUT ROWS */
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+  padding-left: 30px;
+  padding-bottom: 30px;
+  align-items: flex-end;
+}
+.setting-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.setting-left h3 {
+  color: #9a9696;
+}
+
+.setting-right {
+  margin-left: 16px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.settings-row label {
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: larger;
+}
+
+.settings-row input,
+.settings-row select {
+  width: 100%;
+  max-width: 320px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+/* BUTTONS */
+button {
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.btn {
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  background-color: #d5d5d5;
+}
+
+.upload {
+  background-color: #d5d5d5;
+  color: black;
+}
+
+.delete {
+  background-color: #d5d5d5;
+  color: white;
+}
+
+.dark .settings-container {
+  background-color: #1a222c;
+  color: #e8ecf1;
+}
+
+.dark .settings-left {
+  border-right-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .settings-item:hover,
+.dark .settings-item.active {
+  background-color: #2a3644;
+}
+
+.dark .settings-row {
+  border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .settings-row input,
+.dark .settings-row select {
+  background-color: #111821;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #e8ecf1;
+}
+
+.dark .setting-left h3 {
+  color: #b4c0cf;
+}
