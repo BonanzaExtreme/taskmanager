@@ -1,17 +1,20 @@
 import React from "react";
 
 const Status = ({ status }) => {
+  const normalized = String(status || "").toLowerCase();
   const statusColorMap = {
-    "In progress": "#FF5733",
-    Completed: "#28a745",
-    Cancelled: "#C70039",
+    "to do": "#64748b",
+    todo: "#64748b",
+    "in progress": "#f97316",
+    completed: "#16a34a",
+    cancelled: "#dc2626",
   };
 
   return (
     <span
       className="status"
       style={{
-        backgroundColor: statusColorMap[status] || "#ccc",
+        backgroundColor: statusColorMap[normalized] || "#64748b",
         color: "#fff",
         padding: "4px 10px",
         borderRadius: "12px",

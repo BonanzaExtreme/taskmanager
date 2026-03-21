@@ -3,7 +3,7 @@ import "./Topbar.css";
 import { IoIosNotifications } from "react-icons/io";
 
 import { useNavigate } from "react-router-dom";
-import { signOut } from "../api/sessionApi";
+import { signOut } from "../api";
 import { useAuth } from "../context/useAuth";
 import ProfileMenu from "./profileMenu";
 

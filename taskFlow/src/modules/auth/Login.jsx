@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "./auth.css";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmail } from "../../api/sessionApi";
-import { upsertProfile } from "../../api/userApi";
+import { signInWithEmail, upsertProfile } from "../../api";
 
 const Login = () => {
   const navigate = useNavigate();

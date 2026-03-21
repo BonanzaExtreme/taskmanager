@@ -3,7 +3,7 @@ import "./taskList.css";
 import TaskRowCard from "./TaskRowCard";
 import Status from "../../components/status";
 import { FaFilter } from "react-icons/fa";
-import { listTasks } from "../../api/taskApi";
+import { listTasks } from "../../api";
 
 const normalizeStatus = (status) => {
   if (status === "in_progress") return "In progress";

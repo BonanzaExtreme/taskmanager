@@ -1,5 +1,56 @@
-.profile-link:hover {
+.profile-wrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
 }
 
-.profile-link.active {
+.profile-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	color: inherit;
+}
+
+.profile-link:hover {
+	opacity: 0.9;
+}
+
+.profile-link:focus-visible {
+	outline: 2px solid #3b82f6;
+	outline-offset: 2px;
+	border-radius: 6px;
+}
+
+.profile-dropdown {
+	position: absolute;
+	top: 44px;
+	right: 0;
+	min-width: 160px;
+	background: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	border-radius: 8px;
+	box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+	z-index: 120;
+	overflow: hidden;
+}
+
+.profile-dropdown-link,
+.profile-dropdown-item {
+	width: 100%;
+	display: block;
+	text-align: left;
+	background: transparent;
+	border: none;
+	padding: 0.7rem 0.9rem;
+	font-size: 0.9rem;
+	color: #1f2937;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.profile-dropdown-link:hover,
+.profile-dropdown-item:hover {
+	background: #f1f5f9;
 }

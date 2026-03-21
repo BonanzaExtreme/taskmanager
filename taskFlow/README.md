@@ -1,18 +1,84 @@
-# React + Vite
+# TaskFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TaskFlow is a web-based task management system with authentication, dashboard views, task listing, and user settings.
 
-Currently, two official plugins are available:
+## Language Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- JavaScript (ES Modules)
+- CSS
+- JSX (React components)
 
-## React Compiler
+## System Description
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+TaskFlow is built as a single-page application using React and Vite. It includes:
 
-## Expanding the ESLint configuration
+- User authentication with Supabase Auth (sign up, sign in, sign out)
+- Protected routes for authenticated pages
+- Profile synchronization into a `profiles` table
+- Task retrieval through a dedicated API layer (`src/api`)
+- Dashboard, Tasks, and Settings modules with a shared main layout
+- Theme toggle support (light/dark)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
 
-Taskmanager123@ - Database password
+- React 19
+- React Router
+- Supabase JS SDK
+- Vite
+- ESLint
+
+## Project Structure
+
+```text
+src/
+	api/            # Session, profile, and task API wrappers
+	components/     # Reusable UI components (Topbar, Sidebar, profile menu, etc.)
+	context/        # Auth and theme context providers
+	layouts/        # App layout wrappers
+	modules/        # Feature modules: auth, dashboard, tasks, settings
+	routes/         # Route guards (ProtectedRoute)
+```
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+## Dependencies
+
+Runtime dependencies:
+
+- `@emotion/styled`
+- `@mui/material`
+- `@mui/x-charts`
+- `@supabase/supabase-js`
+- `react`
+- `react-dom`
+- `react-icons`
+- `react-router-dom`
+
+Dev dependencies:
+
+- `vite`
+- `@vitejs/plugin-react`
+- `eslint`
+- `@eslint/js`
+- `eslint-plugin-react-hooks`
+- `eslint-plugin-react-refresh`
+- `globals`
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build production bundle
+- `npm run preview` - Preview production build
+- `npm run lint` - Run lint checks
+
+## Notes
+
+- Route access is session-aware. Authenticated users are redirected to `/dashboard`.
+- For Supabase table security, use RLS policies (recommended) for `profiles` and `tasks`.
