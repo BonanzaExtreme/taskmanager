@@ -1,10 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./taskList.css";
 import TaskRowCard from "./TaskRowCard";
 import Status from "../../components/status";
 import { FaFilter } from "react-icons/fa";
+import { listTasks } from "../../api/taskApi";
+
+const normalizeStatus = (status) => {
+  if (status === "in_progress") return "In progress";
+  if (status === "done") return "Completed";
+  if (status === "cancelled") return "Cancelled";
+  return "To do";
+};
+
+const formatDueDate = (dateValue) => {
+  if (!dateValue) return "-";
+  const parsed = new Date(dateValue);
+  if (Number.isNaN(parsed.getTime())) return "-";
+  return parsed.toLocaleDateString();
+};
 
 const TaskList = () => {
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      setLoading(true);
+      setErrorMessage("");
+
+      try {
+        const data = await listTasks();
+        setTasks(data);
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
+
+      setLoading(false);
+    };
+
+    fetchTasks();
+  }, []);
+
   return (
     <div className="tasklist-container">
       <div className="toplist-container">
@@ -35,28 +72,28 @@ const TaskList = () => {
       </div>
 
       <div className="bottom-container">
-        {/* Sample Task Row */}
-        <TaskRowCard>
-          <span>Sample Task</span>
-          <span>Sample Descriptions</span>
-          <span>2023-12-31</span>
-          <Status status="Completed" />
-          <span>High</span>
-        </TaskRowCard>
-        <TaskRowCard>
-          <span>Sample Task</span>
-          <span>Sample Descriptions</span>
-          <span>2023-12-31</span>
-          <Status status="Completed" />
-          <span>High</span>
-        </TaskRowCard>
-        <TaskRowCard>
-          <span>Sample Task</span>
-          <span>Sample Descriptions</span>
-          <span>2023-12-31</span>
-          <Status status="Completed" />
-          <span>High</span>
-        </TaskRowCard>
+        {loading && <p>Loading tasks...</p>}
+
+        {!loading && errorMessage && (
+          <p className="task-error">Failed to load tasks: {errorMessage}</p>
+        )}
+
+        {!loading && !errorMessage && tasks.length === 0 && (
+          <p>No tasks found yet.</p>
+        )}
+
+        {!loading &&
+          !errorMessage &&
+          tasks.length > 0 &&
+          tasks.map((task) => (
+            <TaskRowCard key={task.id}>
+              <span>{task.title}</span>
+              <span>{task.description || "-"}</span>
+              <span>{formatDueDate(task.due_date)}</span>
+              <Status status={normalizeStatus(task.status)} />
+              <span>{task.priority || "-"}</span>
+            </TaskRowCard>
+          ))}
       </div>
     </div>
   );

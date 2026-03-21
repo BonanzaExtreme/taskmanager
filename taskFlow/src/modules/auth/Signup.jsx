@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./auth.css";
-import { supabase } from "../../supabase";
 import { useNavigate } from "react-router-dom";
+import { signUpWithEmail } from "../../api/sessionApi";
+import { upsertProfile } from "../../api/userApi";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -26,48 +27,26 @@ const Signup = () => {
     setErrorMessage("");
     setIsSubmitting(true);
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name,
-        },
-      },
-    });
-
-    if (error) {
-      setIsSubmitting(false);
-      setErrorMessage(error.message);
-    } else {
+    try {
+      const data = await signUpWithEmail({ name, email, password });
       const userId = data?.user?.id;
 
       if (!userId) {
-        setIsSubmitting(false);
-        setErrorMessage("Signup succeeded but user ID is missing.");
-        return;
+        throw new Error("Signup succeeded but user ID is missing.");
       }
 
-      const { error: insertError } = await supabase.from("profiles").upsert(
-        {
-          id: userId,
-          email,
-          name,
-        },
-        { onConflict: "id" },
-      );
+      await upsertProfile({
+        id: userId,
+        email,
+        name,
+      });
 
-      if (insertError) {
-        setIsSubmitting(false);
-        setErrorMessage(
-          `Account created, but profile insert failed: ${insertError.message}`,
-        );
-        return;
-      }
-
-      setIsSubmitting(false);
       console.log("Signup successful:", data);
       navigate("/login", { replace: true });
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

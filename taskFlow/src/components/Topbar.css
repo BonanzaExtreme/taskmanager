@@ -45,7 +45,6 @@
 
 /* NOTIFICATION */
 .notification-wrapper {
-  padding-top: 5px;
   position: relative;
 }
 
@@ -68,11 +67,22 @@
 }
 
 /* PROFILE */
+.profile-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
 .profile-section {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
 }
 
 .profile-avatar {
@@ -93,4 +103,31 @@
 .dropdown-icon {
   font-size: 0.9rem;
   margin-left: 0.3rem;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  min-width: 140px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  z-index: 120;
+  overflow: hidden;
+}
+
+.profile-dropdown-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.profile-dropdown-item:hover {
+  background: #f1f5f9;
 }

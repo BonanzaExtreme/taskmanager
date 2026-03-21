@@ -1,15 +1,33 @@
 import React from "react";
-import { FaArrowDown } from "react-icons/fa6";
 import "./Topbar.css";
 import { IoIosNotifications } from "react-icons/io";
-import { CgProfile } from "react-icons/cg";
+
+import { useNavigate } from "react-router-dom";
+import { signOut } from "../api/sessionApi";
+import { useAuth } from "../context/useAuth";
+import ProfileMenu from "./profileMenu";
 
 const Topbar = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const displayName = user?.user_metadata?.name || "User";
+  const displayRole = user?.email || "Signed in";
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Sign out failed:", error.message);
+    }
+  };
+
   return (
     <header className="topbar">
       <div className="topbar-content">
         <div className="topbar-left">
-          <h1 className="page-title">Hello, User!</h1>
+          <h1 className="page-title">Hello, {displayName}!</h1>
           <h2 className="page-subtitle">Welcome back to TaskFlow</h2>
         </div>
 
@@ -24,16 +42,11 @@ const Topbar = () => {
           </div>
 
           {/* Profile */}
-          <div className="profile-section">
-            <CgProfile className="icon profile-avatar" />
-
-            <div className="profile-name">
-              <span>John Doe</span>
-              <span className="profile-role">User</span>
-            </div>
-
-            <FaArrowDown className="dropdown-icon" />
-          </div>
+          <ProfileMenu
+            name={displayName}
+            role={displayRole}
+            onSignOut={handleSignOut}
+          />
         </div>
       </div>
     </header>

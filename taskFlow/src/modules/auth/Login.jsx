@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./auth.css";
-import { supabase } from "../../supabase";
 import { useNavigate } from "react-router-dom";
+import { signInWithEmail } from "../../api/sessionApi";
+import { upsertProfile } from "../../api/userApi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,45 +26,28 @@ const Login = () => {
     setErrorMessage("");
     setIsSubmitting(true);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setIsSubmitting(false);
-      setErrorMessage(error.message);
-    } else {
+    try {
+      const data = await signInWithEmail({ email, password });
       const userId = data?.user?.id;
       const userEmail = data?.user?.email || email;
       const userName = data?.user?.user_metadata?.name || "";
 
       if (!userId) {
-        setIsSubmitting(false);
-        setErrorMessage("Login succeeded but user ID is missing.");
-        return;
+        throw new Error("Login succeeded but user ID is missing.");
       }
 
-      const { error: profileError } = await supabase.from("profiles").upsert(
-        {
-          id: userId,
-          email: userEmail,
-          name: userName,
-        },
-        { onConflict: "id" },
-      );
+      await upsertProfile({
+        id: userId,
+        email: userEmail,
+        name: userName,
+      });
 
-      if (profileError) {
-        setIsSubmitting(false);
-        setErrorMessage(
-          `Login succeeded, but profile sync failed: ${profileError.message}`,
-        );
-        return;
-      }
-
-      setIsSubmitting(false);
       console.log("Login successful:", data);
       navigate("/dashboard", { replace: true });
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
