@@ -1,7 +1,7 @@
 import { supabase } from "../supabase";
 
 const TASK_COLUMNS =
-  "id, user_id, title, description, due_date, status, priority, created_at, updated_at";
+  "id, user_id, title, description, end_date, status, priority, created_at, updated_at, deleted_at";
 
 const getCurrentUserId = async () => {
   const {
@@ -45,7 +45,7 @@ export const getTaskById = async (taskId) => {
 export const createTask = async ({
   title,
   description = "",
-  due_date = null,
+  end_date = null,
   status = "todo",
   priority = "medium",
 }) => {
@@ -55,7 +55,7 @@ export const createTask = async ({
     user_id: userId,
     title,
     description,
-    due_date,
+    end_date,
     status,
     priority,
   };

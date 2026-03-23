@@ -89,7 +89,7 @@ const TaskList = () => {
             <TaskRowCard key={task.id}>
               <span>{task.title}</span>
               <span>{task.description || "-"}</span>
-              <span>{formatDueDate(task.due_date)}</span>
+              <span>{formatDueDate(task.end_date)}</span>
               <Status status={normalizeStatus(task.status)} />
               <span>{task.priority || "-"}</span>
             </TaskRowCard>

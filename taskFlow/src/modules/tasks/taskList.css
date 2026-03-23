@@ -9,7 +9,6 @@
 .toplist-container {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #ccc;
   padding-bottom: 20px;
 }
 
@@ -27,7 +26,8 @@
 }
 
 .add-task-btn:hover {
-  background-color: #1a2b3c;
+  background-color: #007bff;
+  color: white;
 }
 
 .table-header {
@@ -58,6 +58,7 @@
   border-radius: 10px;
   border: 1px solid #e0e0e0;
   transition: 0.2s ease;
+  margin-top: 10px;
 }
 
 .task-card:hover {
