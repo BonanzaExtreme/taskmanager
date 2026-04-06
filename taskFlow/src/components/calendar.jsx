@@ -76,6 +76,17 @@ const Calendar = ({ tasks = [] }) => {
     );
   }
 
+  // Keep a fixed 6-row month view so the calendar height does not jump
+  // between months that span 4/5/6 weeks.
+  while (days.length < 42) {
+    days.push(
+      <div
+        key={`tail-empty-${days.length}`}
+        className="calendar-day empty"
+      ></div>,
+    );
+  }
+
   const monthName = currentDate.toLocaleString("default", { month: "long" });
 
   return (
@@ -96,7 +107,7 @@ const Calendar = ({ tasks = [] }) => {
         ))}
       </div>
 
-      <div className="calendar-grid">{days}</div>
+      <div className="calendar-grid calendar-body">{days}</div>
     </div>
   );
 };

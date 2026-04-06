@@ -259,24 +259,26 @@ const Topbar = () => {
               {loadingNotifications ? (
                 <p className="notification-empty">Loading notifications...</p>
               ) : notifications.length > 0 ? (
-                notifications.map((notification) => (
-                  <div className="notification-item" key={notification.id}>
-                    <div className="notification-item-header">
-                      <h4 className="notification-title">
-                        {notification.title}
-                      </h4>
-                      <span className="notification-time">
-                        {formatNotificationTime(notification.created_at)}
-                      </span>
+                <div className="notification-list">
+                  {notifications.map((notification) => (
+                    <div className="notification-item" key={notification.id}>
+                      <div className="notification-item-header">
+                        <h4 className="notification-title">
+                          {notification.title}
+                        </h4>
+                        <span className="notification-time">
+                          {formatNotificationTime(notification.created_at)}
+                        </span>
+                      </div>
+                      <p className="notification-message">
+                        {notification.message}
+                      </p>
+                      <p className="notification-timestamp">
+                        {formatNotificationTimestamp(notification.created_at)}
+                      </p>
                     </div>
-                    <p className="notification-message">
-                      {notification.message}
-                    </p>
-                    <p className="notification-timestamp">
-                      {formatNotificationTimestamp(notification.created_at)}
-                    </p>
-                  </div>
-                ))
+                  ))}
+                </div>
               ) : (
                 <p className="notification-empty">No new notifications</p>
               )}

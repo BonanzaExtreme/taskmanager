@@ -79,7 +79,7 @@
   position: absolute;
   top: 40px;
   right: 0;
-  width: 220px;
+  width: 260px;
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -93,11 +93,19 @@
   display: block;
 }
 
+.notification-list {
+  max-height: 340px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+
 .notification-item {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   padding: 0.35rem 0;
+  min-height: 60px;
 }
 
 .notification-item + .notification-item {
