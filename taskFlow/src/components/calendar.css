@@ -34,10 +34,7 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-}
-
-.calendar-day:hover {
-  background: #eaeaea;
+  cursor: default;
 }
 
 .calendar-day.empty {
@@ -48,6 +45,12 @@
 .day-number {
   font-weight: bold;
   margin-bottom: 4px;
+}
+
+.calendar-day.today {
+  background: #eaeaea;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
 }
 
 .reminders {
@@ -61,4 +64,30 @@
   padding: 2px 4px;
   border-radius: 4px;
   margin-bottom: 2px;
+}
+
+.isTodayWithTasks {
+  background: #ffebee;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.14),
+    0 2px 6px rgba(211, 47, 47, 0.2);
+  transform: translateY(-1px);
+}
+
+.isTodayWithTasks-day-number {
+  color: #b71c1c;
+  font-weight: 800;
+}
+
+.reminder.today-task {
+  background: #d32f2f;
+}
+
+.reminder.completed-task {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(255, 255, 255, 0.95);
+  opacity: 0.85;
+  background: #eaeaea;
+  font-weight: 800;
 }

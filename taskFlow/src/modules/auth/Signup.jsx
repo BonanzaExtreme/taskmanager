@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./auth.css";
 import { useNavigate } from "react-router-dom";
 import { signUpWithEmail, upsertProfile } from "../../api";
+import authIllustration from "../../assets/Person writing love letter flat vector illustration.jpg";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -52,7 +53,12 @@ const Signup = () => {
   return (
     <div className="auth-container">
       <div className="auth-left">
-        <div className="auth-image-placeholder">{/* Image will go here */}</div>
+        <div className="auth-image-placeholder">
+          <img
+            src={authIllustration}
+            alt="TaskFlow signup illustration"
+          />
+        </div>
       </div>
       <div className="auth-right">
         <div className="auth-form-container">

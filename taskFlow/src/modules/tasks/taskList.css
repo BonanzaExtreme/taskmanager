@@ -9,7 +9,6 @@
 .toplist-container {
   display: flex;
   flex-direction: column;
-  padding-bottom: 20px;
 }
 
 .title-container {
@@ -22,7 +21,7 @@
 
 .button-group {
   display: flex;
-  gap: 10px; /* space between buttons */
+  gap: 10px;
 }
 
 .add-task-btn:hover {
@@ -50,7 +49,7 @@
 /* Task row cards */
 .task-card {
   display: grid;
-  grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr;
+  grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr 50px;
   gap: 10px;
   align-items: center;
   padding: 12px 16px;
@@ -59,6 +58,8 @@
   border: 1px solid #e0e0e0;
   transition: 0.2s ease;
   margin-top: 10px;
+  position: relative;
+  height: 70px;
 }
 
 .task-card:hover {
@@ -67,6 +68,7 @@
 
 /* Dashed version for Add Task */
 .task-card.dashed {
+  grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr;
   border: 2px dashed #bbb;
   background-color: #fafafa;
   cursor: pointer;
@@ -75,6 +77,77 @@
 
 .task-card.dashed:hover {
   background-color: #f0f0f0;
+}
+
+/* Action button */
+.task-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #666;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Action menu dropdown */
+.action-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  min-width: 120px;
+  margin-top: 4px;
+}
+
+.action-menu-item {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  transition: background-color 0.2s ease;
+}
+
+.action-menu-item:first-child {
+  border-radius: 6px 6px 0 0;
+}
+
+.action-menu-item:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
+.action-menu-item:hover {
+  background-color: #f5f5f5;
+  color: #000;
+}
+
+.action-menu-item:active {
+  background-color: #e8e8e8;
 }
 
 /* ✅ Status badge */

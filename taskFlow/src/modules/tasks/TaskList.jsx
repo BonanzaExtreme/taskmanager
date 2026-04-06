@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./taskList.css";
 import TaskRowCard from "./TaskRowCard";
+import TaskScreen from "./taskScreen";
 import Status from "../../components/status";
 import { FaFilter } from "react-icons/fa";
-import { listTasks } from "../../api";
+import { listTasks, deleteTask } from "../../api";
 
 const normalizeStatus = (status) => {
   if (status === "in_progress") return "In progress";
@@ -23,24 +24,56 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
+  const [editingTaskId, setEditingTaskId] = useState(null);
+
+  const fetchTasks = useCallback(async () => {
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      const data = await listTasks();
+      setTasks(data);
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
+
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      setLoading(true);
-      setErrorMessage("");
-
-      try {
-        const data = await listTasks();
-        setTasks(data);
-      } catch (error) {
-        setErrorMessage(error.message);
-      }
-
-      setLoading(false);
-    };
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTasks();
-  }, []);
+  }, [fetchTasks]);
+
+  const openCreateTaskOverlay = () => {
+    setIsCreateTaskOpen(true);
+  };
+
+  const closeCreateTaskOverlay = () => {
+    setIsCreateTaskOpen(false);
+  };
+
+  const handleTaskCreated = async () => {
+    closeCreateTaskOverlay();
+    setEditingTaskId(null);
+    await fetchTasks();
+  };
+
+  const handleEditTask = (taskId) => {
+    setEditingTaskId(taskId);
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    if (window.confirm("Are you sure you want to delete this task?")) {
+      try {
+        await deleteTask(taskId);
+        await fetchTasks();
+      } catch (error) {
+        setErrorMessage(error.message || "Failed to delete task");
+      }
+    }
+  };
 
   return (
     <div className="tasklist-container">
@@ -64,7 +97,7 @@ const TaskList = () => {
         </div>
 
         {/* ✅ Add New Task Row */}
-        <TaskRowCard dashed onClick={() => console.log("Add new task")}>
+        <TaskRowCard dashed onClick={openCreateTaskOverlay}>
           <span style={{ gridColumn: "1 / -1", textAlign: "center" }}>
             + Add New Task
           </span>
@@ -86,7 +119,12 @@ const TaskList = () => {
           !errorMessage &&
           tasks.length > 0 &&
           tasks.map((task) => (
-            <TaskRowCard key={task.id}>
+            <TaskRowCard
+              key={task.id}
+              taskId={task.id}
+              onEdit={handleEditTask}
+              onDelete={handleDeleteTask}
+            >
               <span>{task.title}</span>
               <span>{task.description || "-"}</span>
               <span>{formatDueDate(task.end_date)}</span>
@@ -95,6 +133,21 @@ const TaskList = () => {
             </TaskRowCard>
           ))}
       </div>
+
+      {isCreateTaskOpen && (
+        <TaskScreen
+          onClose={closeCreateTaskOverlay}
+          onCreated={handleTaskCreated}
+        />
+      )}
+
+      {editingTaskId && (
+        <TaskScreen
+          taskId={editingTaskId}
+          onClose={() => setEditingTaskId(null)}
+          onCreated={handleTaskCreated}
+        />
+      )}
     </div>
   );
 };

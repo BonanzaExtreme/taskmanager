@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 
-const Calendar = () => {
+const Calendar = ({ tasks = [] }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [reminders, setReminders] = useState({});
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -10,20 +9,26 @@ const Calendar = () => {
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+  const today = new Date();
+
+  //Hook
+  const tasksByDate = useMemo(() => {
+    const grouped = {};
+
+    for (const task of tasks) {
+      if (!task.end_date) continue;
+
+      // Keep date-only key: YYYY-MM-DD
+      const dateKey = String(task.end_date).slice(0, 10);
+      if (!grouped[dateKey]) grouped[dateKey] = [];
+      grouped[dateKey].push(task);
+    }
+
+    return grouped;
+  }, [tasks]);
+
   const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
   const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
-
-  const addReminder = (day) => {
-    const text = prompt("Enter reminder:");
-    if (!text) return;
-
-    const key = `${year}-${month}-${day}`;
-
-    setReminders((prev) => ({
-      ...prev,
-      [key]: [...(prev[key] || []), text],
-    }));
-  };
 
   const days = [];
 
@@ -32,16 +37,31 @@ const Calendar = () => {
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
-    const key = `${year}-${month}-${i}`;
+    const isToday =
+      today.getFullYear() === year &&
+      today.getMonth() === month &&
+      today.getDate() === i;
 
+    const dayKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
+    const dueTasks = tasksByDate[dayKey] || [];
+    const isTodayWithTasks = isToday && dueTasks.length > 0;
     days.push(
-      <div key={i} className="calendar-day" onClick={() => addReminder(i)}>
-        <div className="day-number">{i}</div>
-
+      <div
+        key={i}
+        className={`calendar-day ${isToday ? "today" : ""} ${isTodayWithTasks ? "isTodayWithTasks" : ""}`}
+      >
+        <div
+          className={`day-number ${isTodayWithTasks ? "isTodayWithTasks-day-number" : ""}`}
+        >
+          {i}
+        </div>
         <div className="reminders">
-          {(reminders[key] || []).map((r, index) => (
-            <div key={index} className="reminder">
-              {r}
+          {dueTasks.map((task) => (
+            <div
+              key={task.id}
+              className={`reminder ${isTodayWithTasks ? "today-task" : ""} ${task.status === "done" ? "completed-task" : ""}`}
+            >
+              {task.title}
             </div>
           ))}
         </div>

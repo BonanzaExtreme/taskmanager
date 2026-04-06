@@ -3,6 +3,22 @@ import { supabase } from "../supabase";
 const TASK_COLUMNS =
   "id, user_id, title, description, end_date, status, priority, created_at, updated_at, deleted_at";
 
+const getTodayDateString = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const validateDueDate = (endDate) => {
+  if (!endDate) return;
+  const dateOnly = String(endDate).slice(0, 10);
+  if (dateOnly < getTodayDateString()) {
+    throw new Error("Due date cannot be in the past");
+  }
+};
+
 const getCurrentUserId = async () => {
   const {
     data: { user },
@@ -49,6 +65,7 @@ export const createTask = async ({
   status = "todo",
   priority = "medium",
 }) => {
+  validateDueDate(end_date);
   const userId = await getCurrentUserId();
 
   const payload = {
@@ -71,6 +88,9 @@ export const createTask = async ({
 };
 
 export const updateTask = async (taskId, updates) => {
+  if (Object.prototype.hasOwnProperty.call(updates, "end_date")) {
+    validateDueDate(updates.end_date);
+  }
   const userId = await getCurrentUserId();
 
   const { data, error } = await supabase
