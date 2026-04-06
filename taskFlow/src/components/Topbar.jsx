@@ -3,7 +3,7 @@ import "./Topbar.css";
 import { IoIosNotifications } from "react-icons/io";
 
 import { useNavigate } from "react-router-dom";
-import { listMyNotifications, signOut } from "../api";
+import { getMyProfile, listMyNotifications, signOut } from "../api";
 import { useAuth } from "../context/useAuth";
 import ProfileMenu from "./profileMenu";
 
@@ -12,6 +12,48 @@ const Topbar = () => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
+  const [profileAvatarUrl, setProfileAvatarUrl] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadProfile = async () => {
+      if (!user?.id) {
+        setProfileAvatarUrl("");
+        return;
+      }
+
+      try {
+        const profile = await getMyProfile();
+
+        if (isMounted) {
+          setProfileAvatarUrl(
+            profile?.avatar_url || user?.user_metadata?.avatar_url || "",
+          );
+        }
+      } catch {
+        if (isMounted) {
+          setProfileAvatarUrl(user?.user_metadata?.avatar_url || "");
+        }
+      }
+    };
+
+    loadProfile();
+
+    const handleProfileChanged = () => {
+      loadProfile();
+    };
+
+    window.addEventListener("taskflow:profile-changed", handleProfileChanged);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener(
+        "taskflow:profile-changed",
+        handleProfileChanged,
+      );
+    };
+  }, [user?.id, user?.user_metadata?.avatar_url]);
 
   useEffect(() => {
     let isMounted = true;
@@ -44,8 +86,21 @@ const Topbar = () => {
 
     loadNotifications();
 
+    const handleNotificationsChanged = () => {
+      loadNotifications();
+    };
+
+    window.addEventListener(
+      "taskflow:notifications-changed",
+      handleNotificationsChanged,
+    );
+
     return () => {
       isMounted = false;
+      window.removeEventListener(
+        "taskflow:notifications-changed",
+        handleNotificationsChanged,
+      );
     };
   }, [user?.id]);
 
@@ -60,7 +115,19 @@ const Topbar = () => {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return "";
 
-    return date.toLocaleTimeString([], {
+    const diffMs = Date.now() - date.getTime();
+    const minuteMs = 60 * 1000;
+    const hourMs = 60 * minuteMs;
+    const dayMs = 24 * hourMs;
+
+    if (diffMs < minuteMs) return "Just now";
+    if (diffMs < hourMs) return `${Math.floor(diffMs / minuteMs)}m ago`;
+    if (diffMs < dayMs) return `${Math.floor(diffMs / hourMs)}h ago`;
+    if (diffMs < 7 * dayMs) return `${Math.floor(diffMs / dayMs)}d ago`;
+
+    return date.toLocaleString([], {
+      month: "short",
+      day: "numeric",
       hour: "numeric",
       minute: "2-digit",
     });
@@ -105,7 +172,7 @@ const Topbar = () => {
                         {notification.title}
                       </h4>
                       <span className="notification-time">
-                        {formatNotificationTime(notification.created_At)}
+                        {formatNotificationTime(notification.created_at)}
                       </span>
                     </div>
                     <p className="notification-message">
@@ -123,6 +190,7 @@ const Topbar = () => {
           <ProfileMenu
             name={displayName}
             role={displayRole}
+            avatarUrl={profileAvatarUrl}
             onSignOut={handleSignOut}
           />
         </div>

@@ -2,9 +2,9 @@ import { CgProfile } from "react-icons/cg";
 import { useState } from "react";
 import { useAuth } from "../context/useAuth";
 
-const ProfileAvatar = () => {
+const ProfileAvatar = ({ avatarUrl: avatarUrlProp = "" }) => {
   const { user } = useAuth();
-  const avatarUrl = user?.user_metadata?.avatar_url;
+  const avatarUrl = avatarUrlProp || user?.user_metadata?.avatar_url;
   const [imageFailed, setImageFailed] = useState(false);
 
   if (!avatarUrl || imageFailed) {

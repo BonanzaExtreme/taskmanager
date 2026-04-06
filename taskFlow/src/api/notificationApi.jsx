@@ -1,17 +1,79 @@
 import { supabase } from "../supabase";
 
-const NOTIFICATION_COLUMNS =
-  "id, title, message, type, is_read, created_at, user_id";
+const BASE_NOTIFICATION_COLUMNS =
+  "id, title, message, type, is_read, created_at";
+
+const emitNotificationsChanged = () => {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("taskflow:notifications-changed"));
+  }
+};
 
 export const listMyNotifications = async (userId) => {
   if (!userId) return [];
 
-  const { data, error } = await supabase
-    .from("notifications")
-    .select(NOTIFICATION_COLUMNS)
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+  const queryByColumn = async (columnName, selectedColumns) => {
+    const { data, error } = await supabase
+      .from("notifications")
+      .select(selectedColumns)
+      .eq(columnName, userId)
+      .order("created_at", { ascending: false });
 
-  if (error) throw error;
-  return data ?? [];
+    return { data, error };
+  };
+
+  const firstTry = await queryByColumn(
+    "user_id",
+    `${BASE_NOTIFICATION_COLUMNS}, user_id`,
+  );
+  if (!firstTry.error) {
+    return firstTry.data ?? [];
+  }
+
+  const secondTry = await queryByColumn(
+    "user_Id",
+    `${BASE_NOTIFICATION_COLUMNS}, user_Id`,
+  );
+  if (secondTry.error) throw secondTry.error;
+  return secondTry.data ?? [];
+};
+
+export const createNotification = async ({ userId, title, message, type }) => {
+  const basePayload = {
+    title,
+    message,
+    type,
+    is_read: false,
+  };
+
+  const insertWithColumn = async (columnName, selectedColumns) => {
+    const payload = {
+      ...basePayload,
+      [columnName]: userId,
+    };
+
+    return supabase
+      .from("notifications")
+      .insert(payload)
+      .select(selectedColumns)
+      .single();
+  };
+
+  const firstTry = await insertWithColumn(
+    "user_id",
+    `${BASE_NOTIFICATION_COLUMNS}, user_id`,
+  );
+  if (!firstTry.error) {
+    emitNotificationsChanged();
+    return firstTry.data;
+  }
+
+  const secondTry = await insertWithColumn(
+    "user_Id",
+    `${BASE_NOTIFICATION_COLUMNS}, user_Id`,
+  );
+  if (secondTry.error) throw secondTry.error;
+
+  emitNotificationsChanged();
+  return secondTry.data;
 };

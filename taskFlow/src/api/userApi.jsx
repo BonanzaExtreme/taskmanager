@@ -1,7 +1,13 @@
 import { supabase } from "../supabase";
 
-const PROFILE_COLUMNS = "id, email, name, created_at, updated_at";
+const PROFILE_COLUMNS = "id, email, name, avatar_url, created_at, updated_at";
 const AVATAR_BUCKET = "avatars";
+
+const emitProfileChanged = () => {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("taskflow:profile-changed"));
+  }
+};
 
 const getCurrentUser = async () => {
   const {
@@ -35,6 +41,7 @@ export const upsertMyProfile = async ({ name = "" } = {}) => {
     id: user.id,
     email: user.email,
     name,
+    avatar_url: user.user_metadata?.avatar_url || null,
   };
 
   const { data, error } = await supabase
@@ -118,6 +125,17 @@ export const uploadMyAvatar = async (file) => {
     throw userUpdateError;
   }
 
+  const { error: profileUpdateError } = await supabase
+    .from("profiles")
+    .update({ avatar_url: publicUrl })
+    .eq("id", user.id);
+
+  if (profileUpdateError) {
+    throw profileUpdateError;
+  }
+
+  emitProfileChanged();
+
   return {
     avatarUrl: publicUrl,
     avatarPath: filePath,
@@ -151,6 +169,17 @@ export const removeMyAvatar = async () => {
   if (userUpdateError) {
     throw userUpdateError;
   }
+
+  const { error: profileUpdateError } = await supabase
+    .from("profiles")
+    .update({ avatar_url: null })
+    .eq("id", user.id);
+
+  if (profileUpdateError) {
+    throw profileUpdateError;
+  }
+
+  emitProfileChanged();
 
   return {
     user: updatedUserData?.user ?? null,

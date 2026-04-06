@@ -5,7 +5,7 @@ import ProfileDropdownToggle from "./ProfileDropdownToggle";
 import { NavLink } from "react-router-dom";
 import "./profileMenu.css";
 
-const ProfileMenu = ({ name, role, onSignOut }) => {
+const ProfileMenu = ({ name, role, avatarUrl, onSignOut }) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
 
@@ -47,7 +47,7 @@ const ProfileMenu = ({ name, role, onSignOut }) => {
         aria-label="Open settings"
         onClick={() => setIsOpen(false)}
       >
-        <ProfileAvatar />
+        <ProfileAvatar avatarUrl={avatarUrl} />
       </NavLink>
 
       <ProfileInfo name={name} role={role} />

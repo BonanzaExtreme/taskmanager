@@ -1,4 +1,5 @@
 import { supabase } from "../supabase";
+import { createNotification } from "./notificationApi";
 
 const TASK_COLUMNS =
   "id, user_id, title, description, end_date, status, priority, created_at, updated_at, deleted_at";
@@ -84,6 +85,21 @@ export const createTask = async ({
     .single();
 
   if (error) throw error;
+
+  try {
+    await createNotification({
+      userId,
+      title: "Task created",
+      message: `Created task: ${data.title}`,
+      type: "task_created",
+    });
+  } catch (notificationError) {
+    console.error(
+      "Failed to create task notification:",
+      notificationError.message,
+    );
+  }
+
   return data;
 };
 
@@ -102,11 +118,36 @@ export const updateTask = async (taskId, updates) => {
     .single();
 
   if (error) throw error;
+
+  try {
+    await createNotification({
+      userId,
+      title: "Task updated",
+      message: `Updated task: ${data.title}`,
+      type: "task_updated",
+    });
+  } catch (notificationError) {
+    console.error(
+      "Failed to create task notification:",
+      notificationError.message,
+    );
+  }
+
   return data;
 };
 
 export const deleteTask = async (taskId) => {
   const userId = await getCurrentUserId();
+
+  let taskTitle = "a task";
+  try {
+    const existingTask = await getTaskById(taskId);
+    if (existingTask?.title) {
+      taskTitle = existingTask.title;
+    }
+  } catch {
+    // Keep fallback title when task lookup fails.
+  }
 
   const { error } = await supabase
     .from("tasks")
@@ -115,5 +156,20 @@ export const deleteTask = async (taskId) => {
     .eq("user_id", userId);
 
   if (error) throw error;
+
+  try {
+    await createNotification({
+      userId,
+      title: "Task deleted",
+      message: `Deleted task: ${taskTitle}`,
+      type: "task_deleted",
+    });
+  } catch (notificationError) {
+    console.error(
+      "Failed to create task notification:",
+      notificationError.message,
+    );
+  }
+
   return true;
 };

@@ -44,7 +44,11 @@ const Settings = () => {
         const profile = await getMyProfile();
         setName(profile?.name || user?.user_metadata?.name || "");
         setEmail(profile?.email || user?.email || "");
-        setAvatarUrl(user?.user_metadata?.avatar_url || AVATAR_PLACEHOLDER);
+        setAvatarUrl(
+          profile?.avatar_url ||
+            user?.user_metadata?.avatar_url ||
+            AVATAR_PLACEHOLDER,
+        );
       } catch (error) {
         setProfileError(error.message);
         setName(user?.user_metadata?.name || "");
