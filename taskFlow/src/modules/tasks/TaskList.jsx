@@ -26,6 +26,11 @@ const TaskList = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const [editingTaskId, setEditingTaskId] = useState(null);
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
+  const [filters, setFilters] = useState({
+    status: "all",
+    priority: "all",
+  });
 
   const fetchTasks = useCallback(async () => {
     setLoading(true);
@@ -75,18 +80,93 @@ const TaskList = () => {
     }
   };
 
+  const handleFilterChange = (filterType, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [filterType]: value,
+    }));
+  };
+
+  const filteredTasks = tasks.filter((task) => {
+    const statusMatch =
+      filters.status === "all" || task.status === filters.status;
+    const priorityMatch =
+      filters.priority === "all" || task.priority === filters.priority;
+    return statusMatch && priorityMatch;
+  });
+
+  const getFilterButtonText = () => {
+    const statusLabel =
+      filters.status === "all"
+        ? "ALL"
+        : filters.status.charAt(0).toUpperCase() + filters.status.slice(1);
+    const priorityLabel =
+      filters.priority === "all"
+        ? ""
+        : ` + ${filters.priority.charAt(0).toUpperCase() + filters.priority.slice(1)}`;
+    return `Show: ${statusLabel}${priorityLabel}`;
+  };
+
   return (
     <div className="tasklist-container">
       <div className="toplist-container">
         <div className="title-container">
           <h1>Task List</h1>
           <div className="button-group">
-            <button className="add-task-btn">Show: ALL</button>
-            <button className="add-task-btn">
+            <button
+              className="add-task-btn"
+              onClick={() => setShowFilterPanel(!showFilterPanel)}
+            >
+              {getFilterButtonText()}
+            </button>
+            <button
+              className="add-task-btn"
+              onClick={() => setShowFilterPanel(!showFilterPanel)}
+            >
               <FaFilter />
             </button>
           </div>
         </div>
+
+        {/* Filter Panel */}
+        {showFilterPanel && (
+          <div className="filter-panel">
+            <div className="filter-group">
+              <label>Status</label>
+              <div className="filter-options">
+                {["all", "todo", "in_progress", "done", "cancelled"].map(
+                  (status) => (
+                    <button
+                      key={status}
+                      className={`filter-option ${filters.status === status ? "active" : ""}`}
+                      onClick={() => handleFilterChange("status", status)}
+                    >
+                      {status === "all"
+                        ? "All"
+                        : status === "in_progress"
+                          ? "In Progress"
+                          : status.charAt(0).toUpperCase() + status.slice(1)}
+                    </button>
+                  ),
+                )}
+              </div>
+            </div>
+            <div className="filter-group">
+              <label>Priority</label>
+              <div className="filter-options">
+                {["all", "low", "medium", "high"].map((priority) => (
+                  <button
+                    key={priority}
+                    className={`filter-option ${filters.priority === priority ? "active" : ""}`}
+                    onClick={() => handleFilterChange("priority", priority)}
+                  >
+                    {priority.charAt(0).toUpperCase() + priority.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="table-header">
           <span>Task Name</span>
@@ -117,8 +197,13 @@ const TaskList = () => {
 
         {!loading &&
           !errorMessage &&
-          tasks.length > 0 &&
-          tasks.map((task) => (
+          filteredTasks.length === 0 &&
+          tasks.length > 0 && <p>No tasks match the selected filters.</p>}
+
+        {!loading &&
+          !errorMessage &&
+          filteredTasks.length > 0 &&
+          filteredTasks.map((task) => (
             <TaskRowCard
               key={task.id}
               taskId={task.id}

@@ -72,18 +72,84 @@
   color: #e8ecf1;
 }
 
-/* Optional: smooth transition */
+/* Smooth theme transition */
 body,
-.settings-page,
 .sidebar,
 .topbar,
 .main-content,
+.main-content-wrapper,
+.settings-page,
+.settings-container,
+.settings-left,
+.settings-right,
+.settings-item,
+.settings-row,
+.tasklist-container,
+.task-card,
+.task-card.dashed,
+.table-header,
+.action-menu,
+.task-form-card,
+.dashboard-container,
+.asset-card,
+.BottomRight-Section,
+.StatsTextContainer,
+.TitleBottomLeft,
+.TitleBottomRight,
+.dashboard-title,
+.calendar-container,
+.calendar-day,
+.notification-popup,
+.profile-dropdown,
 .nav-link,
-.settings-container {
+button,
+input,
+select,
+textarea {
   transition:
-    background-color 0.3s,
-    color 0.3s,
-    border-color 0.3s;
+    background-color 240ms ease,
+    color 240ms ease,
+    border-color 240ms ease,
+    box-shadow 240ms ease,
+    opacity 240ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .sidebar,
+  .topbar,
+  .main-content,
+  .main-content-wrapper,
+  .settings-page,
+  .settings-container,
+  .settings-left,
+  .settings-right,
+  .settings-item,
+  .settings-row,
+  .tasklist-container,
+  .task-card,
+  .task-card.dashed,
+  .table-header,
+  .action-menu,
+  .task-form-card,
+  .dashboard-container,
+  .asset-card,
+  .BottomRight-Section,
+  .StatsTextContainer,
+  .TitleBottomLeft,
+  .TitleBottomRight,
+  .dashboard-title,
+  .calendar-container,
+  .calendar-day,
+  .notification-popup,
+  .profile-dropdown,
+  .nav-link,
+  button,
+  input,
+  select,
+  textarea {
+    transition: none;
+  }
 }
 
 body {

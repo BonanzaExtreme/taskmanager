@@ -91,3 +91,52 @@
   background: #eaeaea;
   font-weight: 800;
 }
+
+.dark .calendar-container {
+  background: #182330;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.dark .calendar-header,
+.dark .calendar-day-name,
+.dark .day-number {
+  color: #eef3f8;
+}
+
+.dark .calendar-day {
+  background: #243447;
+  color: #d7e2ef;
+}
+
+.dark .calendar-day.today {
+  background: #2f4358;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+}
+
+.dark .calendar-day.empty {
+  background: transparent;
+}
+
+.dark .isTodayWithTasks {
+  background: #4a2630;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.34),
+    0 2px 6px rgba(211, 47, 47, 0.34);
+}
+
+.dark .isTodayWithTasks-day-number {
+  color: #ffb4b4;
+}
+
+.dark .reminder.completed-task {
+  background: #6b7785;
+}
+
+.dark .calendar-header button {
+  background-color: #1c2836;
+  color: #d7e2ef;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}

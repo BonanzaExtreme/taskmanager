@@ -7,6 +7,8 @@ import { getMyProfile, listMyNotifications, signOut } from "../api";
 import { useAuth } from "../context/useAuth";
 import ProfileMenu from "./profileMenu";
 
+const LOCAL_AVATAR_KEY = "taskflow_local_avatar_url";
+
 const Topbar = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -20,6 +22,14 @@ const Topbar = () => {
     const loadProfile = async () => {
       if (!user?.id) {
         setProfileAvatarUrl("");
+        return;
+      }
+
+      const localAvatar = localStorage.getItem(LOCAL_AVATAR_KEY);
+      if (localAvatar) {
+        if (isMounted) {
+          setProfileAvatarUrl(localAvatar);
+        }
         return;
       }
 

@@ -77,3 +77,30 @@ export const createNotification = async ({ userId, title, message, type }) => {
   emitNotificationsChanged();
   return secondTry.data;
 };
+
+export const markAllMyNotificationsAsRead = async (userId) => {
+  if (!userId) return 0;
+
+  const updateByColumn = async (columnName) => {
+    const { data, error } = await supabase
+      .from("notifications")
+      .update({ is_read: true })
+      .eq(columnName, userId)
+      .eq("is_read", false)
+      .select("id");
+
+    return { data, error };
+  };
+
+  const firstTry = await updateByColumn("user_id");
+  if (!firstTry.error) {
+    emitNotificationsChanged();
+    return firstTry.data?.length ?? 0;
+  }
+
+  const secondTry = await updateByColumn("user_Id");
+  if (secondTry.error) throw secondTry.error;
+
+  emitNotificationsChanged();
+  return secondTry.data?.length ?? 0;
+};

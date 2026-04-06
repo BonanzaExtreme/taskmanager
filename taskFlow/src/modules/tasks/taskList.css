@@ -6,6 +6,11 @@
   font-family: sans-serif;
 }
 
+.title-container h1 {
+  margin: 0;
+  color: #1f2d3d;
+}
+
 .toplist-container {
   display: flex;
   flex-direction: column;
@@ -22,6 +27,68 @@
 .button-group {
   display: flex;
   gap: 10px;
+}
+
+/* Filter Panel */
+.filter-panel {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.filter-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-option {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  color: #374151;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.filter-option:hover {
+  border-color: #007bff;
+  color: #007bff;
+  background-color: #f0f7ff;
+}
+
+.filter-option.active {
+  background-color: #007bff;
+  color: #ffffff;
+  border-color: #007bff;
+}
+
+.add-task-btn {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #334155;
+  padding: 8px 12px;
 }
 
 .add-task-btn:hover {
@@ -159,4 +226,101 @@
   font-weight: 500;
   color: #fff;
   justify-self: start; /* align left in grid cell */
+}
+
+.dark .title-container h1,
+.dark .table-header,
+.dark .task-card,
+.dark .task-card span,
+.dark .task-card.dashed {
+  color: #e6edf6;
+}
+
+.dark .add-task-btn {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #1c2836;
+  color: #d7e2ef;
+}
+
+.dark .add-task-btn:hover {
+  background-color: #2b3d52;
+  color: #ffffff;
+}
+
+.dark .table-header {
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .task-card {
+  background-color: #1a2634;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.dark .task-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
+}
+
+.dark .task-card.dashed {
+  border-color: rgba(255, 255, 255, 0.3);
+  background-color: #1f2d3d;
+}
+
+.dark .task-card.dashed:hover {
+  background-color: #243447;
+}
+
+.dark .action-button {
+  color: #b8c9dc;
+}
+
+.dark .action-button:hover {
+  background-color: #2a3b4f;
+  color: #eef3f8;
+}
+
+.dark .action-menu {
+  background-color: #1b2836;
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.dark .action-menu-item {
+  color: #d7e2ef;
+}
+
+.dark .action-menu-item:hover {
+  background-color: #2a3b4f;
+  color: #ffffff;
+}
+
+.dark .action-menu-item:active {
+  background-color: #30465f;
+}
+
+/* Dark mode for filter panel */
+.dark .filter-panel {
+  background-color: #1a2634;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.dark .filter-group label {
+  color: #d7e2ef;
+}
+
+.dark .filter-option {
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #1f2d3d;
+  color: #d7e2ef;
+}
+
+.dark .filter-option:hover {
+  border-color: #3b9fff;
+  color: #3b9fff;
+  background-color: #0f1e2e;
+}
+
+.dark .filter-option.active {
+  background-color: #0066cc;
+  color: #ffffff;
+  border-color: #0066cc;
 }

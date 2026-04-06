@@ -2,15 +2,11 @@ import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import "./settings.css";
 import { ThemeContext } from "../../context/ThemeContextCreate";
 import { FaBell, FaLock, FaSave, FaTrash, FaUpload } from "react-icons/fa";
-import {
-  getMyProfile,
-  removeMyAvatar,
-  updateMyProfile,
-  uploadMyAvatar,
-} from "../../api";
+import { getMyProfile, updateMyProfile } from "../../api";
 import { useAuth } from "../../context/useAuth";
 
 const AVATAR_PLACEHOLDER = "https://via.placeholder.com/140";
+const LOCAL_AVATAR_KEY = "taskflow_local_avatar_url";
 
 const Settings = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -42,18 +38,23 @@ const Settings = () => {
 
       try {
         const profile = await getMyProfile();
+        const localAvatar = localStorage.getItem(LOCAL_AVATAR_KEY);
         setName(profile?.name || user?.user_metadata?.name || "");
         setEmail(profile?.email || user?.email || "");
         setAvatarUrl(
-          profile?.avatar_url ||
+          localAvatar ||
+            profile?.avatar_url ||
             user?.user_metadata?.avatar_url ||
             AVATAR_PLACEHOLDER,
         );
       } catch (error) {
         setProfileError(error.message);
+        const localAvatar = localStorage.getItem(LOCAL_AVATAR_KEY);
         setName(user?.user_metadata?.name || "");
         setEmail(user?.email || "");
-        setAvatarUrl(user?.user_metadata?.avatar_url || AVATAR_PLACEHOLDER);
+        setAvatarUrl(
+          localAvatar || user?.user_metadata?.avatar_url || AVATAR_PLACEHOLDER,
+        );
       }
     };
 
@@ -117,7 +118,15 @@ const Settings = () => {
     setMessage("");
 
     try {
-      const { avatarUrl: uploadedAvatarUrl } = await uploadMyAvatar(file);
+      const uploadedAvatarUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ""));
+        reader.onerror = () => reject(new Error("Failed to read image file."));
+        reader.readAsDataURL(file);
+      });
+
+      localStorage.setItem(LOCAL_AVATAR_KEY, uploadedAvatarUrl);
+      window.dispatchEvent(new CustomEvent("taskflow:profile-changed"));
       setAvatarUrl(uploadedAvatarUrl || AVATAR_PLACEHOLDER);
       setMessage("Profile image uploaded successfully.");
     } catch (error) {
@@ -134,7 +143,8 @@ const Settings = () => {
     setMessage("");
 
     try {
-      await removeMyAvatar();
+      localStorage.removeItem(LOCAL_AVATAR_KEY);
+      window.dispatchEvent(new CustomEvent("taskflow:profile-changed"));
       setAvatarUrl(AVATAR_PLACEHOLDER);
       setMessage("Profile image removed.");
     } catch (error) {
@@ -322,7 +332,7 @@ const Settings = () => {
                 <div className="settings-row">
                   <div className="setting-left">
                     <label>Password</label>
-                    <h3>Change your account password from Supabase auth</h3>
+                    <h3>Coming Soon</h3>
                   </div>
                   <div className="setting-right">
                     <button type="button" disabled>

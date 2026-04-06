@@ -99,3 +99,30 @@
   margin-bottom: 4px;
   padding: 8px 16px;
 }
+
+.dark .asset-card {
+  background-color: #182330;
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.dark .asset-card h3 {
+  color: #eef3f8;
+}
+
+.dark .asset-card p {
+  color: #c4d2e2;
+}
+
+.dark .BottomRight-Section,
+.dark .StatsTextContainer,
+.dark .TitleBottomLeft,
+.dark .TitleBottomRight,
+.dark .dashboard-title {
+  background-color: #182330;
+  color: #eef3f8;
+}
+
+.dark .BottomLeft-Section {
+  background-color: transparent;
+}

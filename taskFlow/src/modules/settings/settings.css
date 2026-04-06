@@ -134,6 +134,20 @@
   align-items: flex-end;
 }
 
+.setting-right button {
+  border: 1px solid #c7ced8;
+  background: #ffffff;
+  color: #1f2d3d;
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.setting-right button:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
 .settings-note {
   color: #9a9696;
   font-size: 0.85rem;
@@ -181,6 +195,20 @@ button {
 .delete {
   background-color: #d5d5d5;
   color: white;
+}
+
+.upload,
+.delete {
+  border: 1px solid #c0c6d0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 8px 12px;
+}
+
+.upload:hover:not(:disabled),
+.delete:hover:not(:disabled) {
+  background-color: #c5ccd6;
 }
 
 .profile-actions button:disabled {
@@ -244,6 +272,20 @@ button {
   background-color: #111821;
   border-color: rgba(255, 255, 255, 0.2);
   color: #e8ecf1;
+}
+
+.dark .setting-right button,
+.dark .upload,
+.dark .delete {
+  background: #243447;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #e6edf6;
+}
+
+.dark .setting-right button:hover:not(:disabled),
+.dark .upload:hover:not(:disabled),
+.dark .delete:hover:not(:disabled) {
+  background: #30465f;
 }
 
 .dark .setting-left h3 {
