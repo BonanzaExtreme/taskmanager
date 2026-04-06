@@ -44,6 +44,7 @@ export const createNotification = async ({ userId, title, message, type }) => {
     message,
     type,
     is_read: false,
+    created_at: new Date().toISOString(),
   };
 
   const insertWithColumn = async (columnName, selectedColumns) => {

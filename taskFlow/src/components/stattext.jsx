@@ -1,16 +1,6 @@
 import React from "react";
 
-const StatText = ({ text, count }) => {
-  const colorMap = {
-    "Open Tasks": "#FF5733",
-    "In Progress": "#FFC300",
-    Completed: "#28B463",
-    Cancelled: "#C70039",
-    "Active Tasks": "#3498DB",
-    "Closed Tasks": "#7D3C98",
-  };
-
-  const countColor = colorMap[text] || "black"; // fallback
+const StatText = ({ text, count, color = "#111827" }) => {
 
   return (
     <div
@@ -22,9 +12,21 @@ const StatText = ({ text, count }) => {
         alignItems: "center",
       }}
     >
-      <span style={{ fontWeight: "bold" }}>{text}</span>
+      <span style={{ fontWeight: "bold", display: "flex", alignItems: "center", gap: "8px" }}>
+        <span
+          aria-hidden="true"
+          style={{
+            width: "10px",
+            height: "10px",
+            borderRadius: "999px",
+            backgroundColor: color,
+            display: "inline-block",
+          }}
+        />
+        {text}
+      </span>
 
-      <span style={{ fontWeight: "bold", color: countColor }}>{count}</span>
+      <span style={{ fontWeight: "bold", color }}>{count}</span>
     </div>
   );
 };

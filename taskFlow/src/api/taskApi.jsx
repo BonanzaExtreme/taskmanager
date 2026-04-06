@@ -4,6 +4,12 @@ import { createNotification } from "./notificationApi";
 const TASK_COLUMNS =
   "id, user_id, title, description, end_date, status, priority, created_at, updated_at, deleted_at";
 
+const emitTasksChanged = () => {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("taskflow:tasks-changed"));
+  }
+};
+
 const getTodayDateString = () => {
   const now = new Date();
   const year = now.getFullYear();
@@ -85,6 +91,7 @@ export const createTask = async ({
     .single();
 
   if (error) throw error;
+  emitTasksChanged();
 
   try {
     await createNotification({
@@ -118,6 +125,7 @@ export const updateTask = async (taskId, updates) => {
     .single();
 
   if (error) throw error;
+  emitTasksChanged();
 
   try {
     await createNotification({
@@ -156,6 +164,7 @@ export const deleteTask = async (taskId) => {
     .eq("user_id", userId);
 
   if (error) throw error;
+  emitTasksChanged();
 
   try {
     await createNotification({

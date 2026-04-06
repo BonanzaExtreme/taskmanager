@@ -7,6 +7,15 @@ import "../../components/calendar.css";
 import PieChart from "../../components/piechart";
 import StatText from "../../components/stattext";
 
+const TASK_COLORS = {
+  open: "#64748b",
+  inProgress: "#f59e0b",
+  completed: "#16a34a",
+  cancelled: "#dc2626",
+  active: "#0ea5e9",
+  closed: "#7c3aed",
+};
+
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,6 +36,16 @@ const Dashboard = () => {
     };
 
     loadTasks();
+
+    const handleTasksChanged = () => {
+      loadTasks();
+    };
+
+    window.addEventListener("taskflow:tasks-changed", handleTasksChanged);
+
+    return () => {
+      window.removeEventListener("taskflow:tasks-changed", handleTasksChanged);
+    };
   }, []);
 
   const stats = useMemo(() => {
@@ -87,20 +106,68 @@ const Dashboard = () => {
           <div className="StatisticsPlaceholder">
             <PieChart
               data={[
-                { id: 0, value: stats.openTasks, label: "Open" },
-                { id: 1, value: stats.inProgress, label: "In Progress" },
-                { id: 2, value: stats.completed, label: "Completed" },
-                { id: 3, value: stats.cancelled, label: "Cancelled" },
+                {
+                  id: 0,
+                  value: stats.openTasks,
+                  label: "Open",
+                  color: TASK_COLORS.open,
+                },
+                {
+                  id: 1,
+                  value: stats.inProgress,
+                  label: "In Progress",
+                  color: TASK_COLORS.inProgress,
+                },
+                {
+                  id: 2,
+                  value: stats.completed,
+                  label: "Completed",
+                  color: TASK_COLORS.completed,
+                },
+                {
+                  id: 3,
+                  value: stats.cancelled,
+                  label: "Cancelled",
+                  color: TASK_COLORS.cancelled,
+                },
               ]}
             />
           </div>
           <div className="StatsTextContainer">
-            <StatText text="Open Tasks" count={stats.openTasks} />
-            <StatText text="In Progress" count={stats.inProgress} />
-            <StatText text="Completed" count={stats.completed} />
-            <StatText text="Cancelled" count={stats.cancelled} />
-            <StatText text="Active Tasks" count={stats.activeTasks} />
-            <StatText text="Closed Tasks" count={stats.closedTasks} />
+            <div className="stats-primary-group">
+              <StatText
+                text="Open Tasks"
+                count={stats.openTasks}
+                color={TASK_COLORS.open}
+              />
+              <StatText
+                text="In Progress"
+                count={stats.inProgress}
+                color={TASK_COLORS.inProgress}
+              />
+              <StatText
+                text="Completed"
+                count={stats.completed}
+                color={TASK_COLORS.completed}
+              />
+              <StatText
+                text="Cancelled"
+                count={stats.cancelled}
+                color={TASK_COLORS.cancelled}
+              />
+            </div>
+            <div className="stats-summary-group">
+              <StatText
+                text="Active Tasks"
+                count={stats.activeTasks}
+                color={TASK_COLORS.active}
+              />
+              <StatText
+                text="Closed Tasks"
+                count={stats.closedTasks}
+                color={TASK_COLORS.closed}
+              />
+            </div>
           </div>
         </div>
       </section>

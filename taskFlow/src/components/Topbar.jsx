@@ -1,9 +1,14 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./Topbar.css";
 import { IoIosNotifications } from "react-icons/io";
 
 import { useNavigate } from "react-router-dom";
-import { getMyProfile, listMyNotifications, signOut } from "../api";
+import {
+  getMyProfile,
+  listMyNotifications,
+  markAllMyNotificationsAsRead,
+  signOut,
+} from "../api";
 import { useAuth } from "../context/useAuth";
 import ProfileMenu from "./profileMenu";
 
@@ -12,6 +17,8 @@ const LOCAL_AVATAR_KEY = "taskflow_local_avatar_url";
 const Topbar = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const notificationRef = useRef(null);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
   const [profileAvatarUrl, setProfileAvatarUrl] = useState("");
@@ -114,6 +121,30 @@ const Topbar = () => {
     };
   }, [user?.id]);
 
+  useEffect(() => {
+    if (!isNotificationOpen) return;
+
+    const handleDocumentClick = (event) => {
+      if (!notificationRef.current?.contains(event.target)) {
+        setIsNotificationOpen(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsNotificationOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleDocumentClick);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleDocumentClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isNotificationOpen]);
+
   const unreadCount = useMemo(
     () => notifications.filter((notification) => !notification.is_read).length,
     [notifications],
@@ -143,6 +174,21 @@ const Topbar = () => {
     });
   };
 
+  const formatNotificationTimestamp = (value) => {
+    if (!value) return "No timestamp";
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "No timestamp";
+
+    return date.toLocaleString([], {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  };
+
   const displayName = user?.user_metadata?.name || "User";
   const displayRole = user?.email || "Signed in";
 
@@ -152,6 +198,30 @@ const Topbar = () => {
       navigate("/login", { replace: true });
     } catch (error) {
       console.error("Sign out failed:", error.message);
+    }
+  };
+
+  const handleToggleNotifications = async () => {
+    const willOpen = !isNotificationOpen;
+    setIsNotificationOpen(willOpen);
+
+    if (!willOpen || !user?.id || unreadCount === 0) {
+      return;
+    }
+
+    setNotifications((prev) =>
+      prev.map((notification) => ({
+        ...notification,
+        is_read: true,
+      })),
+    );
+
+    try {
+      await markAllMyNotificationsAsRead(user.id);
+    } catch (error) {
+      console.error("Failed to mark notifications as read:", error.message);
+      const freshNotifications = await listMyNotifications(user.id);
+      setNotifications(freshNotifications);
     }
   };
 
@@ -165,8 +235,22 @@ const Topbar = () => {
 
         <div className="topbar-right">
           {/* Notification */}
-          <div className="notification-wrapper">
-            <IoIosNotifications className="icon" />
+          <div
+            className={`notification-wrapper ${
+              isNotificationOpen ? "open" : ""
+            }`}
+            ref={notificationRef}
+          >
+            <button
+              type="button"
+              className="notification-trigger"
+              onClick={handleToggleNotifications}
+              aria-label="Toggle notifications"
+              aria-expanded={isNotificationOpen}
+              aria-haspopup="dialog"
+            >
+              <IoIosNotifications className="icon" />
+            </button>
             {unreadCount > 0 && (
               <span className="notification-badge">{unreadCount}</span>
             )}
@@ -187,6 +271,9 @@ const Topbar = () => {
                     </div>
                     <p className="notification-message">
                       {notification.message}
+                    </p>
+                    <p className="notification-timestamp">
+                      {formatNotificationTimestamp(notification.created_at)}
                     </p>
                   </div>
                 ))

@@ -68,6 +68,18 @@
   margin-top: 16px;
 }
 
+.stats-primary-group,
+.stats-summary-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-summary-group {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 2px solid rgba(100, 116, 139, 0.28);
+}
+
 .CalendarPlaceholder {
   display: flex;
   flex: 2;
@@ -125,4 +137,8 @@
 
 .dark .BottomLeft-Section {
   background-color: transparent;
+}
+
+.dark .stats-summary-group {
+  border-top-color: rgba(148, 163, 184, 0.35);
 }

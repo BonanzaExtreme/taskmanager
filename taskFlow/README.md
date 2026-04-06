@@ -2,6 +2,44 @@
 
 TaskFlow is a web-based task management system with authentication, dashboard views, task listing, and user settings.
 
+## Run Locally (After Forking on GitHub)
+
+1. Fork this repository on GitHub.
+2. Clone your fork:
+
+```bash
+git clone https://github.com/<your-username>/taskFlow.git
+cd taskFlow
+```
+
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+4. Create a `.env` file in the project root:
+
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+5. Start the development server:
+
+```bash
+npm run dev
+```
+
+6. Open the local URL shown in terminal (usually `http://localhost:5173`).
+
+Optional checks:
+
+```bash
+npm run lint
+npm run build
+```
+
 ## Language Used
 
 - JavaScript (ES Modules)

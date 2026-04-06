@@ -59,11 +59,31 @@
 }
 
 .reminder {
-  background: #4caf50;
+  background: #64748b;
   color: white;
   padding: 2px 4px;
   border-radius: 4px;
   margin-bottom: 2px;
+}
+
+.reminder.reminder-todo {
+  background: #64748b;
+}
+
+.reminder.reminder-in-progress {
+  background: #f59e0b;
+}
+
+.reminder.reminder-done {
+  background: #16a34a;
+}
+
+.reminder.reminder-cancelled {
+  background: #dc2626;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(255, 255, 255, 0.95);
+  opacity: 0.9;
 }
 
 .isTodayWithTasks {
@@ -83,13 +103,20 @@
   background: #d32f2f;
 }
 
-.reminder.completed-task {
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
-  text-decoration-color: rgba(255, 255, 255, 0.95);
-  opacity: 0.85;
-  background: #eaeaea;
-  font-weight: 800;
+.reminder.today-task.reminder-todo {
+  background: #475569;
+}
+
+.reminder.today-task.reminder-in-progress {
+  background: #d97706;
+}
+
+.reminder.today-task.reminder-done {
+  background: #15803d;
+}
+
+.reminder.today-task.reminder-cancelled {
+  background: #b91c1c;
 }
 
 .dark .calendar-container {
@@ -128,8 +155,20 @@
   color: #ffb4b4;
 }
 
-.dark .reminder.completed-task {
-  background: #6b7785;
+.dark .reminder.reminder-todo {
+  background: #64748b;
+}
+
+.dark .reminder.reminder-in-progress {
+  background: #d97706;
+}
+
+.dark .reminder.reminder-done {
+  background: #15803d;
+}
+
+.dark .reminder.reminder-cancelled {
+  background: #b91c1c;
 }
 
 .dark .calendar-header button {

@@ -30,6 +30,13 @@ const Calendar = ({ tasks = [] }) => {
   const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
   const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
 
+  const getReminderStatusClass = (status) => {
+    if (status === "done") return "reminder-done";
+    if (status === "in_progress") return "reminder-in-progress";
+    if (status === "cancelled") return "reminder-cancelled";
+    return "reminder-todo";
+  };
+
   const days = [];
 
   for (let i = 0; i < firstDayOfMonth; i++) {
@@ -59,7 +66,7 @@ const Calendar = ({ tasks = [] }) => {
           {dueTasks.map((task) => (
             <div
               key={task.id}
-              className={`reminder ${isTodayWithTasks ? "today-task" : ""} ${task.status === "done" ? "completed-task" : ""}`}
+              className={`reminder ${isTodayWithTasks ? "today-task" : ""} ${getReminderStatusClass(task.status)}`}
             >
               {task.title}
             </div>

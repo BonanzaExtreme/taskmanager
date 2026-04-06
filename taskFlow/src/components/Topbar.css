@@ -127,6 +127,12 @@
   line-height: 1.4;
 }
 
+.notification-timestamp {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+
 .notification-empty {
   margin: 0;
   font-size: 0.85rem;
@@ -207,6 +213,10 @@
 .dark .notification-message,
 .dark .notification-empty {
   color: #b4c3d4;
+}
+
+.dark .notification-timestamp {
+  color: #cbd5e1;
 }
 
 .dark .notification-time {
