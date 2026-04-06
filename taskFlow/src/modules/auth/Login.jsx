@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./auth.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmail, upsertProfile } from "../../api";
 import authIllustration from "../../assets/Person writing love letter flat vector illustration.jpg";
 
@@ -102,7 +102,7 @@ const Login = () => {
           </form>
 
           <p className="auth-link">
-            Don't have an account? <a href="/signup">Sign up</a>
+            Don't have an account? <Link to="/signup">Sign up</Link>
           </p>
         </div>
       </div>

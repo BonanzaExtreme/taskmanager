@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./auth.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signUpWithEmail, upsertProfile } from "../../api";
 import authIllustration from "../../assets/Person writing love letter flat vector illustration.jpg";
 
@@ -54,10 +54,7 @@ const Signup = () => {
     <div className="auth-container">
       <div className="auth-left">
         <div className="auth-image-placeholder">
-          <img
-            src={authIllustration}
-            alt="TaskFlow signup illustration"
-          />
+          <img src={authIllustration} alt="TaskFlow signup illustration" />
         </div>
       </div>
       <div className="auth-right">
@@ -117,7 +114,7 @@ const Signup = () => {
           </form>
 
           <p className="auth-link">
-            Already have an account? <a href="/login">Login</a>
+            Already have an account? <Link to="/login">Login</Link>
           </p>
         </div>
       </div>
